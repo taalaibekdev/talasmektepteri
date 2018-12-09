@@ -1,0 +1,247 @@
+<!DOCTYPE xhtml>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Мектептер</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.js"></script>
+   <style type="text/css">
+   #mapid { height: 100% }
+   .кол{cursor:pointer;}
+   aside{
+	float:right;
+	padding:16px;
+	background-color:none;
+	max-width:25%; background-color:lightGray; border: 1px solid black;}
+	
+   header{background-color:NavajoWhite; border: 1px solid black; padding: none;}
+   </style>
+</head>
+<body>
+<header>
+
+</header>
+
+<aside>
+<h3 id="count" align="center">0 мектеп</h3><br>
+
+<ol>
+	
+	<li><label id="talas" class="кол"><input type="checkbox" id="talas_id" onclick="talasf()"/>Талас шаары</label></li><br>
+	<li><label id="talasr" class="кол"><input type="checkbox" id="talasr_id" onclick="talasrf()"/>Талас району</label></li><br>
+	<li><label id="bakay_ata" class="кол"><input type="checkbox" id="bakay_ata_id" onclick="bakay_ataf()"/>Бакай-Ата району</label></li><br>
+	<li><label id="kara_buura" class="кол"><input type="checkbox" id="kara_buura_id" onclick="kara_buuraf()"/>Кара-Буура району</label></li><br>
+	<li><label id="manas" class="кол"><input type="checkbox" id="manas_id" onclick="manasf()"/>Манас району</label></li><br>
+	<li><label id="sapat" class="кол"><input type="checkbox" id="sapat_id" onclick="sapatf()"/>Сапат лицейлери</label></li><br>
+</ol>
+
+</aside>
+<div id="mapid"></div>
+<script>
+var mymap = L.map('mapid').setView([42.52182, 72.23889], 14);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}',{foo: 'bar'}).addTo(mymap);
+	
+	
+var Icon = L.Icon.extend({
+    options: {
+	shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+	}
+});
+
+L.icon = function (options) {
+    return new L.Icon(options);
+};	
+	
+var redIcon = new Icon({iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png'}),
+    greenIcon = new Icon({iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png'}),
+    blueIcon = new Icon({iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png'}),
+    blackIcon = new Icon({iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png'}),
+    yellowIcon = new Icon({iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png'}),
+    violetIcon = new Icon({iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png'});
+
+
+
+var talas_array=[a1=L.marker([42.51748, 72.2504],{icon: greenIcon}).bindPopup("<b>Талас шаары</b><br>№1-мектеп.<br><a href='https://www.google.com/maps/place/42.51748+72.2504/@42.51748,72.2504,15z' target='_blank'>42.51748, 72.2504</a>"),
+				 a2=L.marker([42.52342, 72.25012],{icon: greenIcon}).bindPopup("<b>Талас шаары!</b><br>№2-мектеп.<br><a href='https://www.google.com/maps/place/42.52342+72.25012/@42.52342,72.25012,15z' target='_blank'>42.52342, 72.25012</a>"),
+				 a3=L.marker([42.52353, 72.2323],{icon: greenIcon}).bindPopup("<b>Талас шаары</b><br>№3-мектеп.  <br><a href='https://www.google.com/maps/place/42.52353+72.2323 /@42.52353,72.2323 ,15z' target='_blank'>42.52353, 72.2323 </a>"),
+				 a4=L.marker([42.52875, 72.22888],{icon: greenIcon}).bindPopup("<b>Талас шаары</b><br>№4-мектеп. <br><a href='https://www.google.com/maps/place/42.52875+72.22888/@42.52875,72.22888,15z' target='_blank'>42.52875, 72.22888</a>"),
+				 a5=L.marker([42.53019, 72.19799],{icon: greenIcon}).bindPopup("<b>Талас шаары</b><br>№5-мектеп. <br><a href='https://www.google.com/maps/place/42.53019+72.19799/@42.53019,72.19799,15z' target='_blank'>42.53019, 72.19799</a>"),
+				 a6=L.marker([42.51715, 72.25543],{icon: greenIcon}).bindPopup("<b>Талас шаары</b><br>№6-мектеп. <br><a href='https://www.google.com/maps/place/42.51715+72.25543/@42.51715,72.25543,15z' target='_blank'>42.51715, 72.25543</a>"),
+				 a7=L.marker([42.51636, 72.25829],{icon: greenIcon}).bindPopup("<b>Талас шаары</b><br>№7-мектеп. <br><a href='https://www.google.com/maps/place/42.51636+72.25829/@42.51636,72.25829,15z' target='_blank'>42.51636, 72.25829</a>"),
+				 a8=L.marker([42.53427, 72.20604],{icon: greenIcon}).bindPopup("<b>Талас шаары</b><br>№8-мектеп. <br><a href='https://www.google.com/maps/place/42.53427+72.20604/@42.53427,72.20604,15z' target='_blank'>42.53427, 72.20604</a>"),
+				 a9=L.marker([42.51715, 72.26273],{icon: greenIcon}).bindPopup("<b>Талас шаары</b><br>№9-мектеп. <br><a href='https://www.google.com/maps/place/42.51715+72.26273/@42.51715,72.26273,15z' target='_blank'>42.51715, 72.26273</a>")];
+
+  talasr_array=[b1=L.marker([42.505539, 72.367374],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>Б.уулу Эшмамбет ат.ОМ                          <br><a href='https://www.google.com/maps/place/42.505539+72.367374/@42.505539,72.367374,15z' target='_blank'>42.505539,72.367374</a>"),
+			   	b2=L.marker([42.515305, 72.314771],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>Ш.Шеркулов ат.ОМ                               <br><a href='https://www.google.com/maps/place/42.515305+72.314771/@42.515305,72.314771,15z' target='_blank'>42.515305,72.314771</a>"),
+			   	b3=L.marker([42.507613, 72.328186],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>А.Нуржанов ат.ОМ                               <br><a href='https://www.google.com/maps/place/42.507613+72.328186/@42.507613,72.328186,15z' target='_blank'>42.507613,72.328186</a>"),
+			   	b4=L.marker([42.537388, 72.652111],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>К.Нанаев ат.ОМ                                 <br><a href='https://www.google.com/maps/place/42.537388+72.652111/@42.537388,72.652111,15z' target='_blank'>42.537388, 72.652111</a>"),
+			   	b5=L.marker([42.532675, 72.636216],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>М.Сейталиев ат.ОМ                              <br><a href='https://www.google.com/maps/place/42.532675+72.636216/@42.532675,72.636216,15z' target='_blank'>42.532675, 72.636216</a>"),
+			   	b6=L.marker([42.498308, 72.428792],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>А.Огонбаев ат.ОМ                               <br><a href='https://www.google.com/maps/place/42.498308+72.428792/@42.498308,72.428792,15z' target='_blank'>42.498308,72.428792</a>"),
+			   	b7=L.marker([42.479548, 72.955919],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>Р.Айдаралиев ат.ОМ                             <br><a href='https://www.google.com/maps/place/42.479548+72.955919/@42.479548,72.955919,15z' target='_blank'>42.479548,72.955919</a>"),
+			   	b8=L.marker([42.401256, 72.994400],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>М.Туйтунов ат.ОМ                               <br><a href='https://www.google.com/maps/place/42.401256+72.994400/@42.401256,72.994400,15z' target='_blank'>42.401256,72.994400</a>"),
+			   	b9=L.marker([42.544545, 72.216634],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>Т.Кушчубаева ат.ОМ                             <br><a href='https://www.google.com/maps/place/42.544545+72.216634/@42.544545,72.216634,15z' target='_blank'>42.544545,72.216634</a>"),
+			   	b10=L.marker([42.48841, 72.56872],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>Б.Жанузаков ат.ОМ                               <br><a href='https://www.google.com/maps/place/42.48841+72.56872/@42.48841,72.56872,15z' target='_blank'>42.48841, 72.56872</a>"),
+			   	b11=L.marker([42.485609, 72.525096],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>Ш.Жумагулов ат. \"Манас\" лицей интернаты     <br><a href='https://www.google.com/maps/place/42.485609+72.525096/@42.485609,72.525096,15z' target='_blank'>42.485609,72.525096</a>"),
+			   	b12=L.marker([42.487992, 72.584006],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>Хан-Бүргө ОМ                                  <br><a href='https://www.google.com/maps/place/42.487992+72.584006/@42.487992,72.584006,15z' target='_blank'>42.487992, 72.584006</a>"),
+			   	b13=L.marker([42.443213, 72.271612],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>М.Мамбетов ат.ОМ                              <br><a href='https://www.google.com/maps/place/42.443213+72.271612/@42.443213,72.271612,15z' target='_blank'>42.443213,72.271612</a>"),
+			   	b14=L.marker([42.439314, 72.292548],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>Бал-Бал ОМ                                    <br><a href='https://www.google.com/maps/place/42.439314+72.292548/@42.439314,72.292548,15z' target='_blank'>42.439314,72.292548</a>"),
+			   	b15=L.marker([42.464451, 72.242013],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>Арашан ОМ                                     <br><a href='https://www.google.com/maps/place/42.464451+72.242013/@42.464451,72.242013,15z' target='_blank'>42.464451,72.242013</a>"),
+			   	b16=L.marker([42.485620, 72.570387],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>А.Оторбаев ат.ОМ                              <br><a href='https://www.google.com/maps/place/42.485620+72.570387/@42.485620,72.570387,15z' target='_blank'>42.485620,72.570387</a>"),
+			   	b17=L.marker([42.471873, 72.613735],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>Г.Орозалиева ат.ОМ                            <br><a href='https://www.google.com/maps/place/42.471873+72.613735/@42.471873,72.613735,15z' target='_blank'>42.471873,72.613735</a>"),
+			   	b18=L.marker([42.459409, 72.711011],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>А.Бөрүбаев ат.ОМ                              <br><a href='https://www.google.com/maps/place/42.459409+72.711011/@42.459409,72.711011,15z' target='_blank'>42.459409,72.711011</a>"),
+			   	b19=L.marker([42.467423, 72.655640],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>Ж.уулу Алимкул ат.ОМ                          <br><a href='https://www.google.com/maps/place/42.467423+72.655640/@42.467423,72.655640,15z' target='_blank'>42.467423,72.655640</a>"),
+			   	b20=L.marker([42.483974, 72.470356],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>А.Карыпкулов ат.ОМ                            <br><a href='https://www.google.com/maps/place/42.483974+72.470356/@42.483974,72.470356,15z' target='_blank'>42.483974,72.470356</a>"),
+			   	b21=L.marker([42.507426, 72.228742],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>К.Нурбеков ат.ОМ                              <br><a href='https://www.google.com/maps/place/42.507426+72.228742/@42.507426,72.228742,15z' target='_blank'>42.507426, 72.228742</a>"),
+			   	b22=L.marker([42.553004, 72.599509],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>К.Каимов ат.ОМ                                <br><a href='https://www.google.com/maps/place/42.553004+72.599509/@42.553004,72.599509,15z' target='_blank'>42.553004,72.599509</a>"),
+			   	b23=L.marker([42.408502, 72.957266],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>И.Орозалиев ат.ОМ                             <br><a href='https://www.google.com/maps/place/42.408502+72.957266/@42.408502,72.957266,15z' target='_blank'>42.408502, 72.957266</a>"),
+			   	b24=L.marker([42.512904, 72.393582],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>А.Султанбеков ат.ОМ                           <br><a href='https://www.google.com/maps/place/42.512904+72.393582/@42.512904,72.393582,15z' target='_blank'>42.512904,72.393582</a>"),
+			   	b25=L.marker([42.520011, 72.365265],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>А.Эсенбеков ат.ОМ                             <br><a href='https://www.google.com/maps/place/42.520011+72.365265/@42.520011,72.365265,15z' target='_blank'>42.520011,72.365265</a>"),
+			   	b26=L.marker([42.519987, 72.339479],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>Ш.Нурбаев ат.ОМ                               <br><a href='https://www.google.com/maps/place/42.519987+72.339479/@42.519987,72.339479,15z' target='_blank'>42.519987,72.339479</a>"),
+			   	b27=L.marker([42.449677, 72.396887],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>А.Солтонов ат.ОМ                              <br><a href='https://www.google.com/maps/place/42.449677+72.396887/@42.449677,72.396887,15z' target='_blank'>42.449677,72.396887</a>"),
+			   	b28=L.marker([42.455959, 72.352648],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>М.Козубекова ат.ОМ                            <br><a href='https://www.google.com/maps/place/42.455959+72.352648/@42.455959,72.352648,15z' target='_blank'>42.455959,72.352648</a>"),
+			   	b29=L.marker([42.548611, 72.183623],{icon: blueIcon}).bindPopup("<b>Талас району</b><br>К.Момункулов ат.ОМ                            <br><a href='https://www.google.com/maps/place/42.548611+72.183623/@42.548611,72.183623,15z' target='_blank'>42.548611,72.183623</a>")],
+					
+    bakay_ata_array=[ c1=L.marker([42.55283, 71.7534],{icon: redIcon}).bindPopup("<b>Бакай-Ата району</b><br>Т.Чолушев ат.ОМ           <br><a href='https://www.google.com/maps/place/42.55283+71.7534/@42.55283,71.7534,15z' target='_blank'>42.55283, 71.7534</a>"),
+					  c2=L.marker([42.55576, 71.79589],{icon: redIcon}).bindPopup("<b>Бакай-Ата району</b><br>Т.уулу Жанадил ат.ОМ     <br><a href='https://www.google.com/maps/place/42.55576+71.79589/@42.55576,71.79589,15z' target='_blank'>42.55576, 71.79589</a>"),
+					  c3=L.marker([42.58087, 71.79615],{icon: redIcon}).bindPopup("<b>Бакай-Ата району</b><br>Д.Дүйшебаев ат.ОМ        <br><a href='https://www.google.com/maps/place/42.58087+71.79615/@42.58087,71.79615,15z' target='_blank'>42.58087, 71.79615</a>"),
+					  c4=L.marker([42.57227, 71.82767],{icon: redIcon}).bindPopup("<b>Бакай-Ата району</b><br>Б.Сатыбеков ат.ОМ        <br><a href='https://www.google.com/maps/place/42.57227+71.82767/@42.57227,71.82767,15z' target='_blank'>42.57227, 71.82767</a>"),
+					  c5=L.marker([42.55874, 71.92515],{icon: redIcon}).bindPopup("<b>Бакай-Ата району</b><br>Д.Батырбашиев ат.ЧМГ     <br><a href='https://www.google.com/maps/place/42.55874+71.92515/@42.55874,71.92515,15z' target='_blank'>42.55874, 71.92515</a>"),
+					  c6=L.marker([42.55744, 71.92753],{icon: redIcon}).bindPopup("<b>Бакай-Ата району</b><br>Шаршенбай ат.ОМ          <br><a href='https://www.google.com/maps/place/42.55744+71.92753/@42.55744,71.92753,15z' target='_blank'>42.55744, 71.92753</a>"),
+					  c7=L.marker([42.54682, 71.95195],{icon: redIcon}).bindPopup("<b>Бакай-Ата району</b><br>А.уулу Дүйшөн ат.ОМ      <br><a href='https://www.google.com/maps/place/42.54682+71.95195/@42.54682,71.95195,15z' target='_blank'>42.54682, 71.95195</a>"),
+					  c8=L.marker([42.53754, 72.0088],{icon: redIcon}).bindPopup(" <b>Бакай-Ата району</b><br>Кашка-Жол ОМ             <br><a href='https://www.google.com/maps/place/42.53754+72.0088/@42.53754,72.0088],15z' target='_blank'>42.53754, 72.0088</a>"),
+					  c9=L.marker([42.52641, 72.03538],{icon: redIcon}).bindPopup("<b>Бакай-Ата району</b><br>У.Акынбеков ат.ОМ        <br><a href='https://www.google.com/maps/place/42.52641+72.03538/@42.52641,72.03538,15z' target='_blank'>42.52641, 72.03538</a>"),
+					 c10=L.marker([42.52721, 72.12059],{icon: redIcon}).bindPopup("<b>Бакай-Ата району</b><br>А.Арыстанов ат.ОМ        <br><a href='https://www.google.com/maps/place/42.52721+72.12059/@42.52721,72.12059,15z' target='_blank'>42.52721, 72.12059</a>"),
+					 c11=L.marker([42.49348, 72.11669],{icon: redIcon}).bindPopup("<b>Бакай-Ата району</b><br>С.Көчөрбаев ат.ОМ        <br><a href='https://www.google.com/maps/place/42.49348+72.11669/@42.49348,72.11669,15z' target='_blank'>42.49348, 72.11669</a>"),
+					 c12=L.marker([42.47433, 72.09233],{icon: redIcon}).bindPopup("<b>Бакай-Ата району</b><br>Э.Капалов ат.ОМ          <br><a href='https://www.google.com/maps/place/42.47433+72.09233/@42.47433,72.09233,15z' target='_blank'>42.47433, 72.09233</a>"),
+					 c13=L.marker([42.46714, 72.03709],{icon: redIcon}).bindPopup("<b>Бакай-Ата району</b><br>С.уулу Кушубак ат.ОМ     <br><a href='https://www.google.com/maps/place/42.46714+72.03709/@42.46714,72.03709,15z' target='_blank'>42.46714, 72.03709</a>"),
+					 c14=L.marker([42.44526, 72.03614],{icon: redIcon}).bindPopup("<b>Бакай-Ата району</b><br>Э.Дүйшеев ат.ОМ          <br><a href='https://www.google.com/maps/place/42.44526+72.03614/@42.44526,72.03614,15z' target='_blank'>42.44526, 72.03614</a>"),
+					 c15=L.marker([42.47724, 72.03846],{icon: redIcon}).bindPopup("<b>Бакай-Ата району</b><br>М.уулу Абдырахман ат.ОМ  <br><a href='https://www.google.com/maps/place/42.47724+72.03846/@42.47724,72.03846,15z' target='_blank'>42.47724, 72.03846</a>"),
+					 c16=L.marker([42.46288, 71.99212],{icon: redIcon}).bindPopup("<b>Бакай-Ата району</b><br>Үрмарал ОМ               <br><a href='https://www.google.com/maps/place/42.46288+71.99212/@42.46288,71.99212,15z' target='_blank'>42.46288, 71.99212</a>"),
+					 c17=L.marker([42.473878,71.985614],{icon: redIcon}).bindPopup("<b>Бакай-Ата району</b><br>Т.Мусуралиев ат.ТЭОМ    <br><a href='https://www.google.com/maps/place/42.473878+71.985614/@42.473878,71.985614,15z' target='_blank'>42.473878, 71.985614</a>"),
+					 c18=L.marker([42.463, 71.94225],{icon: redIcon}).bindPopup("<b>Бакай-Ата району</b><br>Б.уулу Нарикбай ат.ОМ      <br><a href='https://www.google.com/maps/place/42.463+71.9422538/@42.463,71.94225,,15z' target='_blank'>42.463,  71.94225</a>"),
+					 c19=L.marker([42.49117, 71.92034],{icon: redIcon}).bindPopup("<b>Бакай-Ата району</b><br>В.И.Ленин ат.ОМ          <br><a href='https://www.google.com/maps/place/42.49117+71.92034/@42.49117,71.92034,15z' target='_blank'>42.49117, 71.92034</a>"),
+					 c20=L.marker([42.49473, 71.90989],{icon: redIcon}).bindPopup("<b>Бакай-Ата району</b><br>Б.Жунусов ат.ОМ          <br><a href='https://www.google.com/maps/place/42.49473+71.90989/@42.49473,71.90989,15z' target='_blank'>42.49473, 71.90989</a>"),
+					 c21=L.marker([42.51227, 71.87442],{icon: redIcon}).bindPopup("<b>Бакай-Ата району</b><br>И.Жанчаров ат.ОМ         <br><a href='https://www.google.com/maps/place/42.51227+71.87442/@42.51227,71.87442,15z' target='_blank'>42.51227, 71.87442</a>")],
+						
+    kara_buura_array=[d1=L.marker([42.614370, 71.591188],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>М.Орозбеков ат.ОМ       <br><a href='https://www.google.com/maps/place/42.614370+71.591188/@42.614370,71.591188,15z' target='_blank'>42.614370, 71.591188</a>"),
+					d2=L.marker([42.623144, 71.583263],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>Ж.Субанбеков ат.ОМ        <br><a href='https://www.google.com/maps/place/42.623144+71.583263/@42.623144,71.583263,15z' target='_blank'>42.623144, 71.583263</a>"),
+					d3=L.marker([42.612790, 71.579080],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>Манас ОМ                  <br><a href='https://www.google.com/maps/place/42.612790+71.579080/@42.612790,71.579080,15z' target='_blank'>42.612790, 71.579080</a>"),
+					d4=L.marker([42.527630, 71.554346],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>М.Акимбеков ат.ОМ         <br><a href='https://www.google.com/maps/place/42.527630+71.554346/@42.527630,71.554346,15z' target='_blank'>42.527630, 71.554346</a>"),
+					d5=L.marker([42.524361, 71.578575],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>А.Умарбеков ат.ОМ         <br><a href='https://www.google.com/maps/place/42.524361+71.578575/@42.524361,71.578575,15z' target='_blank'>42.524361, 71.578575</a>"),
+					d6=L.marker([42.596892, 71.628713],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>А.Сулайманов ат.ОМ        <br><a href='https://www.google.com/maps/place/42.596892+71.628713/@42.596892,71.628713,15z' target='_blank'>42.596892, 71.628713</a>"),
+					d7=L.marker([42.597616, 71.660985],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>Б.Айтпаев ат.ОМ           <br><a href='https://www.google.com/maps/place/42.597616+71.660985/@42.597616,71.660985,15z' target='_blank'>42.597616, 71.660985</a>"),
+					d8=L.marker([42.597042, 71.706054],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>Э.уулу Сейитбек ат.ОМ     <br><a href='https://www.google.com/maps/place/42.597042+71.706054/@42.597042,71.706054,15z' target='_blank'>42.597042, 71.706054</a>"),
+					d9=L.marker([42.551500, 71.649039],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>Т.Айтманбетов ат.ОМ       <br><a href='https://www.google.com/maps/place/42.551500+71.649039/@42.551500,71.649039,15z' target='_blank'>42.551500, 71.649039</a>"),
+					d10=L.marker([42.623038, 71.518039],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>Жеңижок ОМ               <br><a href='https://www.google.com/maps/place/42.623038+71.518039/@42.623038,71.518039,15z' target='_blank'>42.623038, 71.518039</a>"),
+					d11=L.marker([42.631170, 71.531171],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>С.Садыкова ат.ОМ         <br><a href='https://www.google.com/maps/place/42.631170+71.531171/@42.631170,71.531171,15z' target='_blank'>42.631170, 71.531171</a>"),
+					d12=L.marker([42.616708, 71.509044],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>Б.Мырзабаев ат.ОМ        <br><a href='https://www.google.com/maps/place/42.616708+71.509044/@42.616708,71.509044,15z' target='_blank'>42.616708, 71.509044</a>"),
+					d13=L.marker([42.581161, 71.449497],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>А.Шыйкымбаев ат.ОМ       <br><a href='https://www.google.com/maps/place/42.581161+71.449497/@42.581161,71.449497,15z' target='_blank'>42.581161, 71.449497</a>"),
+					d14=L.marker([42.585546, 71.276698],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>А.Калыбаев ат.ОМ         <br><a href='https://www.google.com/maps/place/42.585546+71.276698/@42.585546,71.276698,15z' target='_blank'>42.585546, 71.276698</a>"),
+					d15=L.marker([42.668635, 71.288748],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>Э.Эсенаманов ат.ОМ       <br><a href='https://www.google.com/maps/place/42.668635+71.288748/@42.668635,71.288748,15z' target='_blank'>42.668635, 71.288748</a>"),
+					d16=L.marker([42.689412, 71.249108],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>О.Тургунбаева ат. ТЭОМ   <br><a href='https://www.google.com/maps/place/42.689412+71.249108/@42.689412,71.249108,15z' target='_blank'>42.689412, 71.249108</a>"),
+					d17=L.marker([42.672547, 71.407328],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>Б.Шамратбеков ат.ОМ      <br><a href='https://www.google.com/maps/place/42.672547+71.407328/@42.672547,71.407328,15z' target='_blank'>42.672547, 71.407328</a>"),
+					d18=L.marker([42.684459, 71.316344],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>Р.Осмонов ат.ОМ          <br><a href='https://www.google.com/maps/place/42.684459+71.316344/@42.684459,71.316344,15z' target='_blank'>42.684459, 71.316344</a>"),
+					d19=L.marker([42.682150, 71.215154],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>Р.Шүкүрбеков ат.ОМ       <br><a href='https://www.google.com/maps/place/42.682150+71.215154/@42.682150,71.215154,15z' target='_blank'>42.682150, 71.215154</a>"),
+					d20=L.marker([42.548182, 71.157713],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>Т.Айтматов ат.ОМ         <br><a href='https://www.google.com/maps/place/42.548182+71.157713/@42.548182,71.157713,15z' target='_blank'>42.548182, 71.157713</a>"),
+					d21=L.marker([42.606502, 71.202445],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>Ч.Айтматов ат.ОМ         <br><a href='https://www.google.com/maps/place/42.606502+71.202445/@42.606502,71.202445,15z' target='_blank'>42.606502, 71.202445</a>"),
+					d22=L.marker([42.502917, 71.117178],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>Токтокожоев ат.ОМ        <br><a href='https://www.google.com/maps/place/42.502917+71.117178/@42.502917,71.117178,15z' target='_blank'>42.502917, 71.117178</a>"),
+					d23=L.marker([42.540201, 71.119771],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>Дүйшөн ОМ                <br><a href='https://www.google.com/maps/place/42.540201+71.119771/@42.540201,71.119771,15z' target='_blank'>42.540201, 71.119771</a>"),
+					d24=L.marker([42.539557, 71.083034],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>Кайнар ОМ                <br><a href='https://www.google.com/maps/place/42.539557+71.083034/@42.539557,71.083034,15z' target='_blank'>42.539557, 71.083034</a>"),
+					d25=L.marker([42.543928, 71.348088],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>А.Мадымаров ат.ОМ        <br><a href='https://www.google.com/maps/place/42.543928+71.348088/@42.543928,71.348088,15z' target='_blank'>42.543928, 71.348088</a>"),
+					d26=L.marker([42.503021, 71.336646],{icon: blackIcon}).bindPopup("<b>Кара-Буура району</b><br>М.Чалданбаев ат.ОМ       <br><a href='https://www.google.com/maps/place/42.503021+71.336646/@42.503021,71.336646,15z' target='_blank'>42.503021, 71.336646</a>")],
+						
+    manas_array=[    e1=L.marker([42.76159, 71.41238],{icon: yellowIcon}).bindPopup("<b>Манас району</b><br>Цыренин ат.ОМ         <br><a href='https://www.google.com/maps/place/42.76159+71.41238/@42.76159,71.41238,15z' target='_blank'>42.76159, 71.41238</a>"),
+					 e2=L.marker([42.74407, 71.44892],{icon: yellowIcon}).bindPopup("<b>Манас району</b><br>Манас ОМ              <br><a href='https://www.google.com/maps/place/42.74407+71.44892/@42.74407,71.44892,15z' target='_blank'>42.74407, 71.44892</a>"),
+					 e3=L.marker([42.76315, 71.44732],{icon: yellowIcon}).bindPopup("<b>Манас району</b><br>С.Дүйшембиев ат.ОМ    <br><a href='https://www.google.com/maps/place/42.76315+71.44732/@42.76315,71.44732,15z' target='_blank'>42.76315, 71.44732</a>"),
+					 e4=L.marker([42.76248, 71.48165],{icon: yellowIcon}).bindPopup("<b>Манас району</b><br>Б.Узенов ат.ОМ        <br><a href='https://www.google.com/maps/place/42.76248+71.48165/@42.76248,71.48165,15z' target='_blank'>42.76248, 71.48165</a>"),
+					 e5=L.marker([42.77736, 71.48501],{icon: yellowIcon}).bindPopup("<b>Манас району</b><br>Ш.Кочкорбаев ат.ОМ    <br><a href='https://www.google.com/maps/place/42.77736+71.48501/@42.77736,71.48501,15z' target='_blank'>42.77736, 71.48501</a>"),
+					 e6=L.marker([42.77428, 71.52378],{icon: yellowIcon}).bindPopup("<b>Манас району</b><br>И.Отунбаев ат.ОМ      <br><a href='https://www.google.com/maps/place/42.77428+71.52378/@42.77428,71.52378,15z' target='_blank'>42.77428, 71.52378</a>"),
+					 e7=L.marker([42.74939, 71.54386],{icon: yellowIcon}).bindPopup("<b>Манас району</b><br>М.Рахманбердиев ат.ОМ <br><a href='https://www.google.com/maps/place/42.74939+71.54386/@42.74939,71.54386,15z' target='_blank'>42.74939, 71.54386</a>"),
+					 e8=L.marker([42.77905, 71.55569],{icon: yellowIcon}).bindPopup("<b>Манас району</b><br>Г.Малаев ат.ОМ        <br><a href='https://www.google.com/maps/place/42.77905+71.55569/@42.77905,71.55569,15z' target='_blank'>42.77905, 71.55569</a>"),
+					 e9=L.marker([42.70045, 71.57999],{icon: yellowIcon}).bindPopup("<b>Манас району</b><br>Б.уулу Рахман ат.ОМ   <br><a href='https://www.google.com/maps/place/42.70045+71.57999/@42.70045,71.57999,15z' target='_blank'>42.70045, 71.57999</a>"),
+					e10=L.marker([42.72532, 71.58172],{icon: yellowIcon}).bindPopup("<b>Манас району</b><br>Жийде ОМ              <br><a href='https://www.google.com/maps/place/42.72532+71.58172/@42.72532,71.58172,15z' target='_blank'>42.72532, 71.58172</a>"),
+					e11=L.marker([42.73876, 71.61285],{icon: yellowIcon}).bindPopup("<b>Манас району</b><br>Покровка ОМ           <br><a href='https://www.google.com/maps/place/42.73876+71.61285/@42.73876,71.61285,15z' target='_blank'>42.73876, 71.61285</a>"),
+					e12=L.marker([42.73822, 71.60131],{icon: yellowIcon}).bindPopup("<b>Манас району</b><br>Покровка ТЭОМ №1      <br><a href='https://www.google.com/maps/place/42.73822+71.60131/@42.73822,71.60131,15z' target='_blank'>42.73822, 71.60131</a>"),
+					e13=L.marker([42.75964, 71.62558],{icon: yellowIcon}).bindPopup("<b>Манас району</b><br>Жайылган ОМ           <br><a href='https://www.google.com/maps/place/42.75964+71.62558/@42.75964,71.62558,15z' target='_blank'>42.75964, 71.62558</a>"),
+					e14=L.marker([42.69624, 71.61006],{icon: yellowIcon}).bindPopup("<b>Манас району</b><br>Баласаруу ОМ          <br><a href='https://www.google.com/maps/place/42.69624+71.61006/@42.69624,71.61006,15z' target='_blank'>42.69624, 71.61006</a>"),
+					e15=L.marker([42.70724, 71.53039],{icon: yellowIcon}).bindPopup("<b>Манас району</b><br>А.Жолдошбеков ат.ОМ   <br><a href='https://www.google.com/maps/place/42.70724+71.53039/@42.70724,71.53039,15z' target='_blank'>42.70724, 71.53039</a>"),
+					e16=L.marker([42.69978, 71.7943],{icon: yellowIcon}).bindPopup("<b>Манас району</b><br>А.Усенбаев ат.ОМ       <br><a href='https://www.google.com/maps/place/42.69978+71.7943/@42.69978,71.7943,15z' target='_blank'>42.69978, 71.7943</a>"),
+					e17=L.marker([42.65458, 71.88512],{icon: yellowIcon}).bindPopup("<b>Манас району</b><br>Кайыңды ОМ            <br><a href='https://www.google.com/maps/place/42.65458+71.88512/@42.65458,71.88512,15z' target='_blank'>42.65458, 71.88512</a>"),
+					e18=L.marker([42.74267, 71.7612],{icon: yellowIcon}).bindPopup("<b>Манас району</b><br>Кара-Арча ОМ           <br><a href='https://www.google.com/maps/place/42.74267+71.7612/@42.74267,71.7612,15z' target='_blank'>42.74267, 71.7612</a>"),
+					e19=L.marker([42.62147, 72.08333],{icon: yellowIcon}).bindPopup("<b>Манас району</b><br>О.Израилов ат.ОМ      <br><a href='https://www.google.com/maps/place/42.62147+72.08333/@42.62147,72.08333,15z' target='_blank'>42.62147, 72.08333</a>")],
+	
+    sapat_array=[sapat22=L.marker([42.52182, 72.23889],{icon: violetIcon}).bindPopup("<b>Талас шаары</b><br>\"Манас Ата\" Талас лицейи. <br><a href='https://www.google.com/maps/place/42.52182+72.23889/@42.52182,72.23889,15z' target='_blank'>42.52182, 72.23889</a>"),
+				 sapat23=L.marker([42.51679, 72.26971],{icon: violetIcon}).bindPopup("<b>Талас шаары!</b><br>Талас \"Мээрим\" жалпы билим берүү лицейи. <br><a href='https://www.google.com/maps/place/42.51679+72.26971/@42.51679,72.26971,15z' target='_blank'>42.51679, 72.26971</a>")];
+    
+	
+    talas_layer=L.layerGroup(talas_array);
+	talasr_layer=L.layerGroup(talasr_array);
+	bakay_ata_layer=L.layerGroup(bakay_ata_array);
+	kara_buura_layer=L.layerGroup(kara_buura_array);
+	manas_layer=L.layerGroup(manas_array);
+	sapat_layer=L.layerGroup(sapat_array);
+
+function talasf(){
+  if(document.getElementById("talas_id").checked==true){mymap.addLayer(talas_layer); document.getElementById('talas').style.color="limegreen";}
+  else{mymap.removeLayer(talas_layer); document.getElementById('talas').style.color="black";}
+  countf();
+}
+	
+function talasrf(){
+  if(document.getElementById("talasr_id").checked==true){mymap.addLayer(talasr_layer); document.getElementById('talasr').style.color="limegreen";}
+  else{mymap.removeLayer(talasr_layer); document.getElementById('talasr').style.color="black";}
+  countf();
+}
+
+function bakay_ataf(){
+  if(document.getElementById("bakay_ata_id").checked==true){mymap.addLayer(bakay_ata_layer); document.getElementById('bakay_ata').style.color="limegreen";}
+  else{mymap.removeLayer(bakay_ata_layer); document.getElementById('bakay_ata').style.color="black";}
+  countf();
+}
+
+function kara_buuraf(){
+  if(document.getElementById("kara_buura_id").checked==true){mymap.addLayer(kara_buura_layer); document.getElementById('kara_buura').style.color="limegreen";}
+  else{mymap.removeLayer(kara_buura_layer); document.getElementById('kara_buura').style.color="black";}
+  countf();
+}
+
+function manasf(){
+  if(document.getElementById("manas_id").checked==true){mymap.addLayer(manas_layer); document.getElementById('manas').style.color="limegreen";}
+  else{mymap.removeLayer(manas_layer); document.getElementById('manas').style.color="black";}
+  countf();
+}
+
+function sapatf(){
+  if(document.getElementById("sapat_id").checked==true){mymap.addLayer(sapat_layer); document.getElementById('sapat').style.color="limegreen";}
+  else{mymap.removeLayer(sapat_layer); document.getElementById('sapat').style.color="black";}
+  countf();
+}
+	
+	
+
+function countf(){
+var i=0;
+if(document.getElementById("talas_id").checked==true){i+=talas_array.length}
+if(document.getElementById("talasr_id").checked==true){i+=talasr_array.length}
+if(document.getElementById("bakay_ata_id").checked==true){i+=bakay_ata_array.length}
+if(document.getElementById("kara_buura_id").checked==true){i+=kara_buura_array.length}
+if(document.getElementById("manas_id").checked==true){i+=manas_array.length}
+if(document.getElementById("sapat_id").checked==true){i+=sapat_array.length}
+
+$("#count").text(i+" мектеп");
+}
+
+
+
+
+</script>
+
+</body>
+
+</html>
